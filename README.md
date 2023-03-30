@@ -21,7 +21,7 @@ docker-compose exec php /bin/bash
     php artisan storage:link
 
 
-#@ Delete all container images and re-build
+# Delete all container images and re-build
 docker-compose stop 
 docker-compose rm
 docker-compose build
