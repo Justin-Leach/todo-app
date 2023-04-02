@@ -22,13 +22,17 @@ docker-compose exec php /bin/bash
 
 
 # Delete all container images and re-build
+```
 docker-compose stop 
 docker-compose rm
 docker-compose build
 docker-compose up -d
+```
 
 # Access the mysql container
+```
 docker exec -t -i todo-mysql /bin/bash
 mysql -uroot -ppassword
 use todo;
 show tables;
+```
