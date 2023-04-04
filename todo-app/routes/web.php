@@ -1,5 +1,8 @@
 <?php
 
+
+use App\Http\Livewire\Tasks;
+use App\Http\Livewire\ShowTasks;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -24,4 +27,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/tasks', Tasks::class);
+    // Route::get('/tasks', ShowTasks::class);
 });

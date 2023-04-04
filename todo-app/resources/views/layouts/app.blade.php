@@ -19,6 +19,10 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 
 <body class="font-sans antialiased">
@@ -39,7 +43,7 @@
 
                 <ul>
                     <li class="hover:bg-gray-100">
-                        <a href="/list-task"
+                        <a href="/tasks"
                             class="h-16 px-6 flex flex justify-center items-center w-full
                                 focus:text-orange-500">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" id="Capa_1"
