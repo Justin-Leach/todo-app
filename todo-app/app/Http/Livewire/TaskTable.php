@@ -30,9 +30,11 @@ class TaskTable extends DataTableComponent
             Column::make('ID', 'id')
                 ->sortable(),
             Column::make('title')
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make('description')
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
         ];
     }
 }

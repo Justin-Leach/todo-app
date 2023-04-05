@@ -8,6 +8,7 @@ use Livewire\Component;
 class Tasks extends Component
 {
     public Task $task;
+    public $addTaskModal;
 
     public function mount()
     {
