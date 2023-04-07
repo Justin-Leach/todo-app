@@ -8,11 +8,18 @@ use Livewire\Component;
 class Tasks extends Component
 {
     public Task $task;
+    public bool $editTask = false;
+
     public $addTaskModal;
 
-    public function mount()
+    public function mount($id = null)
     {
-        $this->task = new Task();
+        if ($id === null) {
+            return $this->task = new Task();
+        }
+
+        $this->editTask = true;
+        return $this->task = Task::find($id);
     }
 
     protected $rules = [
@@ -27,6 +34,14 @@ class Tasks extends Component
         $this->validate();
         $this->task->user_id = auth()->user()->id;
         $this->task->save();
+
+        return redirect()->route('tasks');
+    }
+
+    public function deleteTask()
+    {
+        $this->task->delete();
+        return redirect()->route('tasks');
     }
 
     public function render()

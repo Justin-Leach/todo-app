@@ -1,10 +1,10 @@
 <?php
 
 
-use App\Http\Livewire\Tasks;
-use App\Http\Livewire\ShowTasks;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
+use App\Http\Livewire\Tasks;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/tasks', Tasks::class);
-    // Route::get('/tasks', ShowTasks::class);
+    Route::get('/tasks', [TaskController::class, 'taskView'])->name('tasks');
+    Route::get('/task/{id}', Tasks::class)->name('edit-task');
+    Route::get('/task', Tasks::class)->name('create-task');
 });
