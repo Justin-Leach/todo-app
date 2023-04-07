@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 
 class TaskTable extends DataTableComponent
@@ -40,9 +41,15 @@ class TaskTable extends DataTableComponent
             Column::make('title')
                 ->sortable()
                 ->searchable(),
+            Column::make('priority')
+                ->sortable(),
+            Column::make('importance')
+                ->sortable(),
             Column::make('description')
                 ->sortable()
                 ->searchable(),
+            BooleanColumn::make('completed')
+                ->sortable(),
             ButtonGroupColumn::make('Action')
                 ->unclickable()
                 ->attributes(function ($row) {
