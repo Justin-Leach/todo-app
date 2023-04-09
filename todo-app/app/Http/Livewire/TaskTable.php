@@ -28,8 +28,7 @@ class TaskTable extends DataTableComponent
     public function builder(): Builder
     {
         return Task::query()
-            // ->with() // Eager load anything
-            // ->join() // Join some tables
+            ->where('user_id', '=', auth()->user()->id)
             ->select(); // Select some things
     }
 
@@ -60,7 +59,7 @@ class TaskTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('Edit')
                         ->title(fn ($row) => 'Edit')
-                        ->location(fn ($row) => route('edit-task', $row->id))
+                        ->location(fn ($row) => route('task.show', $row->id))
                         ->attributes(function ($row) {
                             return [
                                 'target' => '_self',

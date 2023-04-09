@@ -9,6 +9,9 @@ class Task extends Model
 {
     use HasFactory;
 
+    public const TASK_UPDATED = true;
+    public const TASK_CREATED = false;
+
     /**
      * @var string
      */
