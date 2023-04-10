@@ -36,53 +36,69 @@
                 <span class="error text-red-500">{{ $message }}</span>
             @enderror
         </div>
+
+        <div class="mt-4 flex flex-col">
+             <label class="block font-medium text-sm text-gray-700" for="completed">{{ __('Completed') }}</label>
+            <input type="checkbox" class="accent-pink-500" wire:model="task.completed" checked>
+            @error('task.description')
+                <span class="error text-red-500">{{ $message }}</span>
+            @enderror
+        </div>
+
     </form>
 
     <div class="mt-4 flex justify-end space-x-4">
 
         @if ($editMode)
-            <button type="submit" class="relative w-64 inline-block text-lg group disabled:opacity-25"
-                wire:click="deleteTask" wire:loading.attr="disabled">
-                <span
-                    class="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-red-800 transition-colors duration-300 ease-out border-2 border-red-900 rounded-lg group-hover:text-white">
-                    <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-red-50"></span>
-                    <span
-                        class="absolute left-0 w-64 h-64 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-red-900 group-hover:-rotate-180 ease"></span>
-                    <span class="relative">{{ __('Delete Task') }}</span>
-                </span>
-                <span
-                    class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-red-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-                    data-rounded="rounded-lg"></span>
-            </button>
+            <x-btn-red class="w-48" wire:click="deleteTaskModal" wire:loading.attr="disabled">
+                <x-slot name="title">
+                    {{ __('Delete Task') }}
+                </x-slot>
+            </x-btn-red>
 
-            <button type="submit" class="relative w-64 inline-block text-lg group disabled:opacity-25"
-                wire:click="updateTask" wire:loading.attr="disabled">
-                <span
-                    class="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-green-800 transition-colors duration-300 ease-out border-2 border-green-900 rounded-lg group-hover:text-white">
-                    <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-green-50"></span>
-                    <span
-                        class="absolute left-0 w-64 h-64 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-green-900 group-hover:-rotate-180 ease"></span>
-                    <span class="relative">{{ __('Save Task') }}</span>
-                </span>
-                <span
-                    class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-green-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-                    data-rounded="rounded-lg"></span>
-            </button>
+            <x-dialog-modal wire:model="confirmingDeleteTaskModal">
+                <x-slot name="title">
+                    {{-- Todo Add task Name --}}
+                    {{ __('Delete Task') }}
+                </x-slot>
+
+                <x-slot name="content">
+                    <div class="text-xl">
+                        {{ __('Are you sure you want to delete this task?') }}
+                    </div>
+                </x-slot>
+
+                <x-slot name="footer">
+
+                    <x-btn-gray class="w-32" wire:click="$toggle('confirmingDeleteTaskModal')"
+                        wire:loading.attr="disabled">
+                        <x-slot name="title">
+                            {{ __('Cancel') }}
+                        </x-slot>
+                    </x-btn-gray>
+
+                    <x-btn-red class="w-48" wire:click="deleteTask" wire:loading.attr="disabled">
+                        <x-slot name="title">
+                            {{ __('Delete Task') }}
+                        </x-slot>
+                    </x-btn-red>
+                </x-slot>
+            </x-dialog-modal>
+
+            <x-btn-green class="w-48" wire:click="updateTask" wire:loading.attr="disabled">
+                <x-slot name="title">
+                    {{ __('Save Task') }}
+                </x-slot>
+            </x-btn-green>
         @else
-            <button type="submit" class="relative w-64 inline-block text-lg group disabled:opacity-25"
-                wire:click="createTask" wire:loading.attr="disabled">
-                <span
-                    class="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-green-800 transition-colors duration-300 ease-out border-2 border-green-900 rounded-lg group-hover:text-white">
-                    <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-green-50"></span>
-                    <span
-                        class="absolute left-0 w-64 h-64 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-green-900 group-hover:-rotate-180 ease"></span>
-                    <span class="relative">{{ __('Create Task') }}</span>
-                </span>
-                <span
-                    class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-green-900 rounded-lg group-hover:mb-0 group-hover:mr-0"
-                    data-rounded="rounded-lg"></span>
-            </button>
+            <x-btn-green class="w-48" wire:click="createTask" wire:loading.attr="disabled">
+                <x-slot name="title">
+                    {{ __('Create Task') }}
+                </x-slot>
+            </x-btn-green>
         @endif
 
     </div>
+
+
 </div>

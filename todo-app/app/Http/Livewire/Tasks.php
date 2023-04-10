@@ -10,12 +10,18 @@ class Tasks extends Component
     public Task $task;
     public bool $editMode = false;
 
-    public $addTaskModal;
+    /**
+     * Indicates if delete task is being confirmed.
+     *
+     * @var bool
+     */
+    public $confirmingDeleteTaskModal = false;
+
 
     public function mount($task, $updateTask)
     {
         $this->editMode = $updateTask;
-        return $this->task = $task;
+        $this->task = $task;
     }
 
     protected $rules = [
@@ -23,8 +29,13 @@ class Tasks extends Component
         'task.description' => 'required|string|max:500',
         'task.priority' => 'required|integer|between:0,3',
         'task.importance' => 'required|integer|between:0,3',
+        'task.completed' => 'required|boolean'
     ];
 
+    /**
+     * Create a Task, then redirect to the task table
+     *
+     */
     public function createTask()
     {
         $this->validate();
@@ -34,6 +45,10 @@ class Tasks extends Component
         return redirect()->route('tasks');
     }
 
+    /**
+     * Update a Task, then redirect to the task table
+     *
+     */
     public function updateTask()
     {
         $this->validate();
@@ -42,10 +57,24 @@ class Tasks extends Component
         return redirect()->route('tasks');
     }
 
+    /**
+     * Delete a Task, then redirect to the task table
+     *
+     */
     public function deleteTask()
     {
         $this->task->delete();
         return redirect()->route('tasks');
+    }
+
+    /**
+     * Confirm that the user would like to delete task.
+     *
+     * @return void
+     */
+    public function deleteTaskModal()
+    {
+        $this->confirmingDeleteTaskModal = true;
     }
 
     public function render()
