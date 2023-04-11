@@ -38,9 +38,33 @@
         </div>
 
         <div class="mt-4 flex flex-col">
-             <label class="block font-medium text-sm text-gray-700" for="completed">{{ __('Completed') }}</label>
-            <input type="checkbox" class="accent-pink-500" wire:model="task.completed" checked>
-            @error('task.description')
+             <label class="block font-medium text-sm text-gray-700" for="status">{{ __('Status') }}</label>
+            <div class="w-96">
+                <div x-data="{ isOpen: false }" class="relative">
+                    <div>
+                        <span @click="isOpen = !isOpen" class="rounded-md shadow-sm">
+                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                {{ $selectedOptionValue}}
+                                <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 14l5-5-5-5-1.414 1.414L11.172 9H4v2h7.172l-2.586 2.586L10 14z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </span>
+                    </div>
+
+                    <div x-show="isOpen" @click.away="isOpen = false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <div class="py-1" role="none">
+                            @foreach($options as $option)
+                                {{-- TODO close the isOpen after the user selected the element --}}
+                                <a wire:click="selectOption('{{ $option->id }}', '{{ $option->name }}')" href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ $option->name }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @error('task.status_id')
                 <span class="error text-red-500">{{ $message }}</span>
             @enderror
         </div>

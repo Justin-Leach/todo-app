@@ -47,7 +47,7 @@ class TaskTable extends DataTableComponent
             Column::make('description')
                 ->sortable()
                 ->searchable(),
-            BooleanColumn::make('completed')
+            Column::make('status_id')
                 ->sortable(),
             ButtonGroupColumn::make('Action')
                 ->unclickable()

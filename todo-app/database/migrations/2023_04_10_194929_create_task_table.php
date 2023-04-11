@@ -19,11 +19,14 @@ class CreateTaskTable extends Migration
             $table->integer('priority');
             $table->integer('importance');
             $table->string('description');
-            $table->boolean('completed')->default(0);;
+
+            $table->unsignedBigInteger('status_id');
+
             $table->unsignedBigInteger('user_id');
             // $table->unsignedBigInteger('team_id');
             $table->timestamps();
 
+            $table->foreign('status_id')->references('id')->on('task_status');
             $table->foreign('user_id')->references('id')->on('users');
             // $table->foreign('team_id')->references('id')->on('teams');
         });

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\TaskStatus;
+use PhpParser\Node\Stmt\Break_;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
@@ -27,7 +29,48 @@ class Task extends Model
         'priority',
         'importance',
         'description',
-        'completed',
+        'status_id',
         'user_id'
     ];
+
+    /**
+     * Give the status name
+     *
+     */
+    public function statusName($status_id)
+    {
+        $name = "";
+
+        switch ($status_id) {
+            case TaskStatus::TASK_STATUS_TO_DO_ID:
+                $name = TaskStatus::TASK_STATUS_TO_DO;
+                break;
+            case TaskStatus::TASK_STATUS_IN_PROGRESS_ID:
+                $name = TaskStatus::TASK_STATUS_IN_PROGRESS;
+                break;
+            case TaskStatus::TASK_STATUS_DONE_ID:
+                $name = TaskStatus::TASK_STATUS_DONE;
+                break;
+        }
+
+        return $name;
+    }
+
+    public function statusNameItem($index)
+    {
+        $nameItem = "";
+        switch ($index) {
+            case TaskStatus::TASK_STATUS_TO_DO_ID:
+                $nameItem = TaskStatus::TASK_STATUS_TO_DO_ITEMS;
+                break;
+            case TaskStatus::TASK_STATUS_IN_PROGRESS_ID:
+                $nameItem = TaskStatus::TASK_STATUS_IN_PROGRESS_ITEMS;
+                break;
+            case TaskStatus::TASK_STATUS_DONE_ID:
+                $nameItem = TaskStatus::TASK_STATUS_DONE_ITEMS;
+                break;
+        }
+
+        return $nameItem;
+    }
 }

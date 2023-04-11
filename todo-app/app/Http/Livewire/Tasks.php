@@ -4,11 +4,18 @@ namespace App\Http\Livewire;
 
 use App\Models\Task;
 use Livewire\Component;
+use App\Models\TaskStatus;
 
 class Tasks extends Component
 {
     public Task $task;
     public bool $editMode = false;
+
+    // Dropdown
+    public $isOpen = false;
+    public $options = null;
+    public $selectedOptionID = null;
+    public $selectedOptionValue = null;
 
     /**
      * Indicates if delete task is being confirmed.
@@ -22,6 +29,12 @@ class Tasks extends Component
     {
         $this->editMode = $updateTask;
         $this->task = $task;
+
+        // Dropdown
+        $this->options = TaskStatus::all();
+        // Default value
+        $this->selectedOptionID = $this->options->first()->id;
+        $this->selectedOptionValue = $this->options->first()->name;
     }
 
     protected $rules = [
@@ -29,7 +42,6 @@ class Tasks extends Component
         'task.description' => 'required|string|max:500',
         'task.priority' => 'required|integer|between:0,3',
         'task.importance' => 'required|integer|between:0,3',
-        'task.completed' => 'required|boolean'
     ];
 
     /**
@@ -38,11 +50,14 @@ class Tasks extends Component
      */
     public function createTask()
     {
+        // dd($this->selectedOptionID);
+
         $this->validate();
         $this->task->user_id = auth()->user()->id;
+        $this->task->status_id = $this->selectedOptionID;
         $this->task->save();
 
-        return redirect()->route('tasks');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -52,9 +67,10 @@ class Tasks extends Component
     public function updateTask()
     {
         $this->validate();
+        $this->task->status_id = $this->selectedOptionID;
         $this->task->save();
 
-        return redirect()->route('tasks');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -64,7 +80,7 @@ class Tasks extends Component
     public function deleteTask()
     {
         $this->task->delete();
-        return redirect()->route('tasks');
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -75,6 +91,19 @@ class Tasks extends Component
     public function deleteTaskModal()
     {
         $this->confirmingDeleteTaskModal = true;
+    }
+
+
+    public function toggleDropdown()
+    {
+        $this->isOpen = !$this->isOpen;
+    }
+
+    public function selectOption($optionID, $optionValue)
+    {
+        $this->selectedOptionID = $optionID;
+        $this->selectedOptionValue = $optionValue;
+        $this->toggleDropdown();
     }
 
     public function render()
