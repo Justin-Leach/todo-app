@@ -5,11 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use Livewire\Component;
-use Livewire\WithSortableJS;
-use PhpParser\Node\Expr\List_;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class ProjectBoard extends Component
 {
+    use LivewireAlert;
+
     public $todoItems;
     public $inProgressItems;
     public $doneItems;
@@ -84,6 +85,8 @@ class ProjectBoard extends Component
         $list = &$this->{$newNameItems};
         $item = Task::find($taskID);
         $list->push($item);
+
+        $this->alertMessage('Task successfully created!');
     }
 
     public function updateTaskModal($taskID, $oldNameItems, $newNameItems)
@@ -97,11 +100,13 @@ class ProjectBoard extends Component
         $item = $oldList->pull($index);
 
         $newList->push($item);
+
+        $this->alertMessage('Task successfully updated!');
     }
 
     public function deleteTaskModal()
     {
-        // Todo flash message
+        $this->alertMessage('Task successfully deleted!');
     }
 
     private function updateTaskStatus($taskID, $newStatus)
@@ -109,6 +114,15 @@ class ProjectBoard extends Component
         $task = Task::find($taskID);
         $task->status_id = $newStatus;
         $task->save();
+    }
+
+    private function alertMessage($message)
+    {
+        $this->alert('success', $message, [
+            'toast' => true,
+            'timerProgressBar' => true,
+            'timer' => '2000',
+        ]);
     }
 
     public function render()
