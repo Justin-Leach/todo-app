@@ -15,6 +15,10 @@ class ProjectBoard extends Component
     public $inProgressItems;
     public $doneItems;
 
+    public $numberTodoItems = 0;
+    public $numberInProgressItems = 0;
+    public $numberDoneItems = 0;
+
     protected $listeners = [
         'updateListTodo' => 'updateListTodo',
         'updateListInProgress' => 'updateListInProgress',
@@ -26,9 +30,16 @@ class ProjectBoard extends Component
 
     public function mount()
     {
-        $this->todoItems = Task::where('status_id', '=', TaskStatus::TASK_STATUS_TO_DO_ID)->get();
-        $this->inProgressItems = Task::where('status_id', '=', TaskStatus::TASK_STATUS_IN_PROGRESS_ID)->get();
-        $this->doneItems = Task::where('status_id', '=', TaskStatus::TASK_STATUS_DONE_ID)->get();
+        $queryTaskTodo = Task::where('status_id', '=', TaskStatus::TASK_STATUS_TO_DO_ID)->get();
+        $queryTaskInProgress = Task::where('status_id', '=', TaskStatus::TASK_STATUS_IN_PROGRESS_ID)->get();
+        $queryTaskDone = Task::where('status_id', '=', TaskStatus::TASK_STATUS_DONE_ID)->get();
+
+        $this->todoItems = $queryTaskTodo;
+        $this->numberTodoItems = count($queryTaskTodo);
+        $this->inProgressItems = $queryTaskInProgress;
+        $this->numberInProgressItems = count($queryTaskInProgress);
+        $this->doneItems = $queryTaskDone;
+        $this->numberDoneItems = count($queryTaskDone);
     }
 
     public function updateListTodo($taskID, $nameItems, $newStatus)
@@ -86,6 +97,7 @@ class ProjectBoard extends Component
         $item = Task::find($taskID);
         $list->push($item);
 
+        $this->updateCountTask();
         $this->alertMessage('Task successfully created!');
     }
 
@@ -101,11 +113,13 @@ class ProjectBoard extends Component
 
         $newList->push($item);
 
+        $this->updateCountTask();
         $this->alertMessage('Task successfully updated!');
     }
 
     public function deleteTaskModal()
     {
+        $this->updateCountTask();
         $this->alertMessage('Task successfully deleted!');
     }
 
@@ -114,6 +128,15 @@ class ProjectBoard extends Component
         $task = Task::find($taskID);
         $task->status_id = $newStatus;
         $task->save();
+
+        $this->updateCountTask();
+    }
+
+    private function updateCountTask()
+    {
+        $this->numberTodoItems = count($this->todoItems);
+        $this->numberInProgressItems = count($this->inProgressItems);
+        $this->numberDoneItems = count($this->doneItems);
     }
 
     private function alertMessage($message)

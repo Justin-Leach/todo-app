@@ -199,7 +199,7 @@
 
     </x-dialog-modal>
 
-    <x-jet-dialog-modal wire:model="deleteTaskModal">
+    <x-dialog-modal wire:model="deleteTaskModal">
         <x-slot name="title">
             <div class="text-xl text-start">
                 {{ __('Delete Task') }}
@@ -226,5 +226,5 @@
                 </x-slot>
             </x-btn-red>
         </x-slot>
-    </x-jet-dialog-modal>
+    </x-dialog-modal>
 </div>

@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full pb-6">
 
-    <div class="border border-red-500 h-1/5">
+    <div class="h-1/5">
         <div class="h-16">
             <a class="text-lg cursor-pointer" wire:click="openCreateTaskModal()">
                 Create Task
@@ -12,7 +12,7 @@
 
         <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
             <div class="sticky top-0 h-8 bg-slate-100">
-                <h2 class="font-bold px-6 py-2">Todo</h2>
+                <h2 class="font-semibold px-4 py-2">TO DO {{ $numberTodoItems != 0 ? $numberTodoItems . ' ISSUES' : '' }}</h2>
             </div>
 
             {{-- Todo Improve the hardcode id --}}
@@ -27,7 +27,7 @@
 
         <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
             <div class="sticky top-0 h-8 bg-slate-100">
-                <h2 class="font-bold px-6 py-2">In Progress</h2>
+                <h2 class="font-semibold px-4 py-2">IN PROGRESS {{ $numberInProgressItems != 0 ? $numberInProgressItems . ' ISSUES' : '' }}</h2>
             </div>
 
             {{-- Todo Improve the hardcode id --}}
@@ -42,7 +42,7 @@
 
         <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
             <div class="sticky top-0 h-8 bg-slate-100">
-                <h2 class="font-bold px-6 py-2">Done</h2>
+                <h2 class="font-semibold px-4 py-2">DONE {{ $numberDoneItems != 0 ? $numberDoneItems . ' ISSUES' : '' }}</h2>
             </div>
 
             {{-- Todo Improve the hardcode id --}}
