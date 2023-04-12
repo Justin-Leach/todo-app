@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full pb-6">
 
     <div class="border border-red-500 h-1/5">
         <div class="h-16">
@@ -8,11 +8,15 @@
         </div>
     </div>
 
-    <div class="flex bg-white rounded py-4 px-4 w-full h-4/5 overflow-y-auto space-x-4">
-        <div class="w-1/3 px-4 bg-slate-100 rounded-lg">
-            <h2 class="font-bold mb-2">Todo</h2>
+    <div class="flex bg-white rounded px-4 space-x-4 w-full h-4/5 overflow-y-auto">
+
+        <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
+            <div class="sticky top-0 h-8 bg-slate-100">
+                <h2 class="font-bold px-6 py-2">Todo</h2>
+            </div>
+
             {{-- Todo Improve the hardcode id --}}
-            <ul id="todoItems-1" wire:sortable="updateListOrder('todo')" class="space-y-1 height-project-board">
+            <ul id="todoItems-1" wire:sortable="updateListOrder('todo')" class="px-4 space-y-1 height-project-board">
                 @foreach ($todoItems as $item)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="todo-{{ $loop->index }}" wire:click="openTaskModal('{{ $item->id }}')">
                             {{ $item['title'] }}
@@ -20,10 +24,14 @@
                 @endforeach
             </ul>
         </div>
-        <div class="w-1/3 px-4 bg-slate-100 rounded-lg">
-            <h2 class="font-bold mb-2">In Progress</h2>
+
+        <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
+            <div class="sticky top-0 h-8 bg-slate-100">
+                <h2 class="font-bold px-6 py-2">In Progress</h2>
+            </div>
+
             {{-- Todo Improve the hardcode id --}}
-            <ul id="inProgressItems-2" wire:sortable="updateListOrder('inProgress')" class="space-y-1 height-project-board">
+            <ul id="inProgressItems-2" wire:sortable="updateListOrder('inProgress')" class="px-4 space-y-1 height-project-board">
                 @foreach ($inProgressItems as $item)
                     <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="in-progress-{{ $loop->index }}" wire:click="openTaskModal('{{ $item->id }}')">
                         {{ $item['title'] }}
@@ -31,10 +39,14 @@
                 @endforeach
             </ul>
         </div>
-        <div class="w-1/3 px-4 bg-slate-100 rounded-lg">
-            <h2 class="font-bold mb-2">Done</h2>
+
+        <div class="flex flex-col w-1/3 bg-slate-100 rounded-lg">
+            <div class="sticky top-0 h-8 bg-slate-100">
+                <h2 class="font-bold px-6 py-2">Done</h2>
+            </div>
+
             {{-- Todo Improve the hardcode id --}}
-            <ul id="doneItems-3" wire:sortable="updateListOrder('done')" class="space-y-1 height-project-board">
+            <ul id="doneItems-3" wire:sortable="updateListOrder('done')" class="px-4 space-y-1 height-project-board">
                 @foreach ($doneItems as $item)
                     <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="done-{{ $loop->index }}" wire:click="openTaskModal('{{ $item->id }}')">
                         {{ $item['title'] }}
