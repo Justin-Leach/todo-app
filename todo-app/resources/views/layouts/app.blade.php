@@ -28,7 +28,7 @@
 <body class="font-sans antialiased">
     <x-jet-banner />
 
-    <div class=" bg-gray-100">
+    <div class="bg-white">
 
         <div class="flex overflow-hidden h-screen">
             <aside class="flex flex-col items-center bg-white text-gray-700 shadow h-full">
@@ -167,7 +167,7 @@
             </aside>
 
             <!-- Page Content -->
-            <div class="w-full overflow-y-scroll">
+            <div class="w-full overflow-hidden">
                 {{ $slot }}
             </div>
         </div>
