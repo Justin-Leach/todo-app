@@ -29,8 +29,11 @@
             </div>
         </div> --}}
 
+        @livewire('project-board-modal')
+
         @livewire('task-modal')
 
-        @livewire('project-board')
+        @livewire('project-boards')
+
     </div>
 </x-app-layout>

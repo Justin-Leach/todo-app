@@ -24,6 +24,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 2,
@@ -33,6 +34,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 3,
@@ -42,6 +44,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 2,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 4,
@@ -51,6 +54,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 3,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 5,
@@ -60,6 +64,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 6,
@@ -69,6 +74,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 7,
@@ -78,6 +84,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 8,
@@ -87,6 +94,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 9,
@@ -96,6 +104,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 10,
@@ -105,6 +114,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 11,
@@ -114,6 +124,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
         DB::table('tasks')->insert([
             'id' => 12,
@@ -123,6 +134,7 @@ class TaskSeeder extends Seeder
             'description' => 'aaaaaa',
             'status_id' => 1,
             'user_id' => 1,
+            'project_board_id' => 1
         ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\TaskStatus;
-use PhpParser\Node\Stmt\Break_;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,7 +29,8 @@ class Task extends Model
         'importance',
         'description',
         'status_id',
-        'user_id'
+        'user_id',
+        'project_board_id'
     ];
 
     /**

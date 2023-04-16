@@ -89,7 +89,6 @@ class TaskModal extends Component
         $this->emit('deleteTaskModal');
     }
 
-
     public function deleteTaskModal()
     {
         $this->deleteTaskModal = true;

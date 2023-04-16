@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\TaskSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\TaskStatusSeeder;
+use Database\Seeders\ProjectBoardSeeder;
+use Database\Seeders\ProjectBoardUserSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             TaskStatusSeeder::class,
-            TaskSeeder::class
+            ProjectBoardSeeder::class,
+            ProjectBoardUserSeeder::class,
+            TaskSeeder::class,
         ]);
     }
 }

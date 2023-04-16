@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\ProjectBoard;
 use App\Models\Task;
-use App\Models\TaskStatus;
 use Livewire\Component;
+use App\Repositories\ProjectBoardRepository;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-class ProjectBoard extends Component
+class ProjectBoards extends Component
 {
     use LivewireAlert;
+
+    public $projectBoard;
+    public $projectSelectedExpired;
 
     public $todoItems;
     public $inProgressItems;
@@ -30,14 +34,20 @@ class ProjectBoard extends Component
 
     public function mount()
     {
-        $queryTaskTodo = Task::where('status_id', '=', TaskStatus::TASK_STATUS_TO_DO_ID)->get();
-        $queryTaskInProgress = Task::where('status_id', '=', TaskStatus::TASK_STATUS_IN_PROGRESS_ID)->get();
-        $queryTaskDone = Task::where('status_id', '=', TaskStatus::TASK_STATUS_DONE_ID)->get();
+        $this->projectBoard = (new ProjectBoardRepository())->getActiveProjectUser();
+
+        $this->projectSelectedExpired = $this->projectBoard->exipred();
+
+        $queryTaskTodo = (new ProjectBoardRepository)->getProjectTaskTodo($this->projectBoard->id);
+        $queryTaskInProgress = (new ProjectBoardRepository)->getProjectTaskInProgress($this->projectBoard->id);
+        $queryTaskDone = (new ProjectBoardRepository)->getProjectTaskDone($this->projectBoard->id);
 
         $this->todoItems = $queryTaskTodo;
         $this->numberTodoItems = count($queryTaskTodo);
+
         $this->inProgressItems = $queryTaskInProgress;
         $this->numberInProgressItems = count($queryTaskInProgress);
+
         $this->doneItems = $queryTaskDone;
         $this->numberDoneItems = count($queryTaskDone);
     }
@@ -91,6 +101,15 @@ class ProjectBoard extends Component
         $this->emit('updateTaskModalListeners', $taskID);
     }
 
+    public function openCreateProjectBoardModal()
+    {
+        if (!$this->projectSelectedExpired) {
+            $this->alertMessage('error', 'Project Board has not yet expired!');
+            return;
+        }
+        $this->emit('createProjectBoardModalListeners');
+    }
+
     public function createTaskModal($taskID, $newNameItems)
     {
         $list = &$this->{$newNameItems};
@@ -98,7 +117,7 @@ class ProjectBoard extends Component
         $list->push($item);
 
         $this->updateCountTask();
-        $this->alertMessage('Task successfully created!');
+        $this->alertMessage('success', 'Task successfully created!');
     }
 
     public function updateTaskModal($taskID, $oldNameItems, $newNameItems)
@@ -114,13 +133,13 @@ class ProjectBoard extends Component
         $newList->push($item);
 
         $this->updateCountTask();
-        $this->alertMessage('Task successfully updated!');
+        $this->alertMessage('success', 'Task successfully updated!');
     }
 
     public function deleteTaskModal()
     {
         $this->updateCountTask();
-        $this->alertMessage('Task successfully deleted!');
+        $this->alertMessage('success', 'Task successfully deleted!');
     }
 
     private function updateTaskStatus($taskID, $newStatus)
@@ -139,9 +158,9 @@ class ProjectBoard extends Component
         $this->numberDoneItems = count($this->doneItems);
     }
 
-    private function alertMessage($message)
+    private function alertMessage($status, $message)
     {
-        $this->alert('success', $message, [
+        $this->alert($status, $message, [
             'toast' => true,
             'timerProgressBar' => true,
             'timer' => '2000',

@@ -13,14 +13,15 @@
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.0",
         "alpinejs": "^3.12.0",
-        "autoprefixer": "^10.4.7",
+        "autoprefixer": "^10.4.14",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.4.14",
-        "tailwindcss": "^3.1.0"
+        "postcss": "^8.4.21"
     },
     "dependencies": {
+        "moment": "^2.29.4",
+        "pikaday": "^1.8.2",
         "sortablejs": "^1.15.0"
     }
 }
