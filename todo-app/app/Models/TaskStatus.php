@@ -9,15 +9,19 @@ class TaskStatus extends Model
 {
     use HasFactory;
 
-    public const TASK_STATUS_TO_DO_ID = 1;
+    public const TASK_STATUS_BACKLOG_ID = 1;
+    public const TASK_STATUS_BACKLOG = "BACKLOG";
+    public const TASK_STATUS_BACKLOG_ITEMS = "backlogItems";
+
+    public const TASK_STATUS_TO_DO_ID = 2;
     public const TASK_STATUS_TO_DO = "TO DO";
     public const TASK_STATUS_TO_DO_ITEMS = "todoItems";
 
-    public const TASK_STATUS_IN_PROGRESS_ID = 2;
+    public const TASK_STATUS_IN_PROGRESS_ID = 3;
     public const TASK_STATUS_IN_PROGRESS = "IN PROGRESS";
     public const TASK_STATUS_IN_PROGRESS_ITEMS = "inProgressItems";
 
-    public const TASK_STATUS_DONE_ID = 3;
+    public const TASK_STATUS_DONE_ID = 4;
     public const TASK_STATUS_DONE = "DONE";
     public const TASK_STATUS_DONE_ITEMS = "doneItems";
 

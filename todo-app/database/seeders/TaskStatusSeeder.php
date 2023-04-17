@@ -17,15 +17,19 @@ class TaskStatusSeeder extends Seeder
     public function run()
     {
         DB::table('task_status')->insert([
-            'id' => 1,
+            'id' => TaskStatus::TASK_STATUS_BACKLOG_ID,
+            'name' => 'BACKLOG',
+        ]);
+        DB::table('task_status')->insert([
+            'id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'name' => 'TO DO',
         ]);
         DB::table('task_status')->insert([
-            'id' => 2,
+            'id' => TaskStatus::TASK_STATUS_IN_PROGRESS_ID,
             'name' => 'IN PROGRESS',
         ]);
         DB::table('task_status')->insert([
-            'id' => 3,
+            'id' => TaskStatus::TASK_STATUS_DONE_ID,
             'name' => 'DONE',
         ]);
     }

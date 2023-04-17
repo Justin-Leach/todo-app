@@ -36,7 +36,7 @@ class TaskModal extends Component
     public function mount()
     {
         // Dropdown
-        $this->options = TaskStatus::all();
+        $this->options = TaskStatus::where('id', '!=', TaskStatus::TASK_STATUS_BACKLOG_ID)->get();
         $this->defaultDropdownStatus();
     }
 

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Task;
+use App\Models\TaskStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +22,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -32,7 +32,7 @@ class TaskSeeder extends Seeder
             'priority' => '2',
             'importance' => '2',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -42,7 +42,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 2,
+            'status_id' => TaskStatus::TASK_STATUS_IN_PROGRESS_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -52,7 +52,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 3,
+            'status_id' => TaskStatus::TASK_STATUS_DONE_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -62,7 +62,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -72,7 +72,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -82,7 +82,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -92,7 +92,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -102,7 +102,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -112,7 +112,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -122,7 +122,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
@@ -132,7 +132,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
-            'status_id' => 1,
+            'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
         ]);
