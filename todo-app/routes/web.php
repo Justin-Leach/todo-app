@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProjectBoardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/index', [ProjectBoardController::class, 'index']);
+    Route::get('/backlog', [ProjectBoardController::class, 'backlog']);
 
     Route::get('/tasks', [TaskController::class, 'view'])->name('tasks');
     Route::get('/task/{id}', [TaskController::class, 'show'])->name('task.show');

@@ -44,7 +44,7 @@
 
                 <ul>
                     <li class="hover:bg-gray-100">
-                        <a href="/tasks"
+                        <a href="/index"
                             class="h-16 px-6 flex flex justify-center items-center w-full
                                 focus:text-orange-500">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" id="Capa_1"
@@ -71,7 +71,7 @@
                     </li>
 
                     <li class="hover:bg-gray-100">
-                        <a href="/calendar"
+                        <a href="/backlog"
                             class="h-16 px-6 flex flex justify-center items-center w-full
                                 focus:text-orange-500">
 
@@ -89,7 +89,7 @@
                     </li>
 
                     <li class="hover:bg-gray-100">
-                        <a href="/chart"
+                        <a href="/tasks"
                             class="h-16 px-6 flex flex justify-center items-center w-full
                                 focus:text-orange-500">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
