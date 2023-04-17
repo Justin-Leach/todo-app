@@ -29,7 +29,10 @@ class ProjectBoards extends Component
         'updateListDone' => 'updateListDone',
         'createTaskModal' => 'createTaskModal',
         'updateTaskModal' => 'updateTaskModal',
-        'deleteTaskModal' => 'deleteTaskModal' // the elements in the last get automatically remove
+        'deleteTaskModal' => 'deleteTaskModal', // the elements in the last get automatically remove
+
+        // Project board
+        'updateProjectBoardModal' => 'updateProjectBoard',
     ];
 
     public function mount()
@@ -108,6 +111,17 @@ class ProjectBoards extends Component
             return;
         }
         $this->emit('createProjectBoardModalListeners');
+    }
+
+    public function openUpdateProjectBoardModal()
+    {
+        $this->emit('updateProjectBoardModalListeners', $this->projectBoard->id);
+    }
+
+    public function updateProjectBoard(ProjectBoard $projectBoard)
+    {
+        $this->projectBoard = $projectBoard;
+        $this->alertMessage('success', 'Project board successfully updated!');
     }
 
     public function createTaskModal($taskID, $newNameItems)

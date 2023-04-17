@@ -8,19 +8,27 @@
             <h2 class="font-semibold px-4 py-2">End date : {{ $projectBoard->expired_at->format('Y-m-d') }}</h2>
         </div>
 
-
-
         <div class="h-16">
             <a class="text-lg cursor-pointer" wire:click="openCreateTaskModal()">
                 Create Task
             </a>
         </div>
 
-        <div class="h-16 border border-red-200">
-            <a class="text-lg cursor-pointer" wire:click="openCreateProjectBoardModal()">
-                Create new Project Board
-            </a>
+        <div class="flex flex-row">
+
+            <div class="h-16 border border-red-200 bg-gray-200" wire:click="openUpdateProjectBoardModal()">
+                <a class="text-lg cursor-pointer" >
+                    Edit Project Board
+                </a>
+            </div>
+            <div class="h-16 border border-red-200 bg-gray-200" wire:click="openCreateProjectBoardModal()">
+                <a class="text-lg cursor-pointer">
+                    Create new Project Board
+                </a>
+            </div>
+
         </div>
+
     </div>
 
     <div class="flex rounded px-4 space-x-4 w-full h-4/5 overflow-y-auto bg-white">

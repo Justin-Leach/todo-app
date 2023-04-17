@@ -12,6 +12,8 @@ class ProjectBoardModal extends Component
 {
     public ProjectBoard $projectBoard;
 
+    public $dateSelected;
+
     // Modal
     public $createProjectBoardModal = false;
     public $updateProjectBoardModal = false;
@@ -19,16 +21,17 @@ class ProjectBoardModal extends Component
     protected $listeners = [
         'createProjectBoardModalListeners' => 'createProjectBoardModal',
         'updateProjectBoardModalListeners' => 'updateProjectBoardModal',
-        'dateSelectedListeners' => 'dateSelected'
+        'dateSelected' => 'dateSelectedSS'
     ];
 
     protected $rules = [
         'projectBoard.name' => 'required|string|min:5',
-        'projectBoard.expired_at' => 'required|date',
+        'dateSelected' => 'required|date',
     ];
 
     public function mount()
     {
+        $this->dateSelected = Carbon::now()->format('Y-m-d');
     }
 
     public function createProjectBoardModal()
@@ -40,18 +43,17 @@ class ProjectBoardModal extends Component
     public function updateProjectBoardModal($projectBoardID)
     {
         $this->projectBoard = ProjectBoard::find($projectBoardID);
+        $this->dateSelected = $this->projectBoard->expired_at->format('Y-m-d');
         $this->updateProjectBoardModal = true;
-    }
 
-    public function dateSelected($dateSelected)
-    {
-        $this->projectBoard->expired_at = $dateSelected;
+        $this->emit('updateProjectBoardEvent', $this->projectBoard->expired_at->format('Y-m-d H:i:s'));
     }
 
     public function createProjectBoard()
     {
         $this->validate();
         $this->projectBoard->owner_id = auth()->user()->id;
+        $this->projectBoard->expired_at = $this->dateSelected;
         $this->projectBoard->save();
         $this->createProjectBoardModal = false;
 
@@ -61,6 +63,18 @@ class ProjectBoardModal extends Component
 
     public function updateProjectBoard()
     {
+        $this->validate();
+        $this->projectBoard->expired_at = $this->dateSelected;
+        $this->projectBoard->save();
+        $this->updateProjectBoardModal = false;
+
+        // Dispatch a event
+        $this->emit('updateProjectBoardModal', $this->projectBoard);
+    }
+
+    public function dateSelectedSS($date)
+    {
+        $this->dateSelected = $date;
     }
 
     public function render()
