@@ -62,6 +62,7 @@ class TaskModal extends Component
         $this->validate();
         $this->task->status_id = intval($this->selectedOptionID);
         $this->task->user_id = auth()->user()->id;
+        $this->task->project_board_id = 1; // TODO change this to the selected project
         $this->task->save();
 
         $this->createTaskModal = false;
