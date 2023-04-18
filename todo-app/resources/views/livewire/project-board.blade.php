@@ -40,7 +40,7 @@
 
             {{-- Todo Improve the hardcode id --}}
             {{-- Instead Improve the disable so the user is not able to click in the first place --}}
-            <ul id="todoItems-1" wire:sortable="updateListOrder('todo')" class="px-4 space-y-1 height-project-board">
+            <ul id="todoItems-2" wire:sortable="updateListOrder('todo')" class="px-4 space-y-1 height-project-board">
                 @foreach ($todoItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="todo-{{ $loop->index }}">
@@ -62,7 +62,7 @@
             </div>
 
             {{-- Todo Improve the hardcode id --}}
-            <ul id="inProgressItems-2" wire:sortable="updateListOrder('inProgress')" class="px-4 space-y-1 height-project-board">
+            <ul id="inProgressItems-3" wire:sortable="updateListOrder('inProgress')" class="px-4 space-y-1 height-project-board">
                 @foreach ($inProgressItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="in-progress-{{ $loop->index }}">
@@ -84,7 +84,7 @@
             </div>
 
             {{-- Todo Improve the hardcode id --}}
-            <ul id="doneItems-3" wire:sortable="updateListOrder('done')" class="px-4 space-y-1 height-project-board">
+            <ul id="doneItems-4" wire:sortable="updateListOrder('done')" class="px-4 space-y-1 height-project-board">
                 @foreach ($doneItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="done-{{ $loop->index }}">
@@ -109,7 +109,7 @@
 
         console.log(projectBoardActive);
 
-        const todoList = document.getElementById('todoItems-1');
+        const todoList = document.getElementById('todoItems-2');
         // Initialize the SortableJS instance for the Todo list
         const todoSortable = new Sortable(todoList, {
             group: 'shared-lists',
@@ -121,7 +121,7 @@
         });
 
         // Initialize the SortableJS instance for the In Progress list
-        const inProgressList = document.getElementById('inProgressItems-2');
+        const inProgressList = document.getElementById('inProgressItems-3');
         const inProgressSortable = new Sortable(inProgressList, {
             group: 'shared-lists',
             animation: 300,
@@ -132,7 +132,7 @@
         });
 
         // Initialize the SortableJS instance for the Done list
-        const doneList = document.getElementById('doneItems-3');
+        const doneList = document.getElementById('doneItems-4');
         const doneSortable = new Sortable(doneList, {
             group: 'shared-lists',
             animation: 300,

@@ -11,8 +11,8 @@
                 <h2 class="font-semibold px-4 py-2">Project Board ({{ $numberProjectBoardItems != 0 ? $numberProjectBoardItems . '  issues)' : '' }}</h2>
             </div>
 
-            {{-- Todo Improve the hardcode id --}}
-            <ul id="todoItems-1" wire:sortable="updateListOrder('todo')" class="px-4 space-y-1 height-project-board">
+            {{-- Project Board Improve the hardcode id --}}
+            <ul id="projectBoardItems-2" wire:sortable="updateListOrder('projectBoard')" class="px-4 space-y-1 height-project-board">
                 @foreach ($projectBoardItems as $item)
                     <li id="task-{{ $item->id }}" class="bg-white border p-2" wire:key="project-board-{{ $loop->index }}">
                         {{ $item['title'] }}
@@ -27,7 +27,7 @@
             </div>
 
             {{-- Todo Improve the hardcode id --}}
-            <ul id="inProgressItems-2" wire:sortable="updateListOrder('inProgress')" class="px-4 space-y-1 height-project-board">
+            <ul id="backlogItems-1" wire:sortable="updateListOrder('backlog')" class="px-4 space-y-1 height-project-board">
                 @foreach ($backlogItems as $item)
                     <li id="task-{{ $item->id }}" class="bg-white border p-2" wire:key="backlog-{{ $loop->index }}">
                         {{ $item['title'] }}
@@ -37,28 +37,58 @@
         </div>
     </div>
 
+    {{-- Modal Move Task --}}
+    <x-dialog-modal wire:model="moveTaskModal">
+        <x-slot name="title">
+            <h2 class="font-bold text-xl">{{ __('Move Task') }}</h2>
+        </x-slot>
+
+        <x-slot name="content">
+            <form class="flex flex-col" wire:submit.prevent="moveTaskProjectBoard">
+                <div class="flex flex-col">
+                    <h2 class="block font-medium text-md text-gray-700">{{ __('The project scope will be affected by this action.') }}</h2>
+                    <div class="flex flex-row mt-2 space-x-1">
+                        <h2 class="font-bold text-md">{{ $selectedTaskTitle }}</h2>
+                        <h2 class="font-medium text-md">will be moved from</h2>
+                        <h2 class="font-bold text-md">{{ $moveTaskTaskText1 }}</h2>
+                        <h2 class="font-medium text-md">to</h2>
+                        <h2 class="font-bold text-md">{{ $moveTaskTaskText2 }}</h2>
+                    </div>
+                </div>
+            </form>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-btn-gray class="w-36" wire:click="moveTaskProjectBoard" wire:loading.attr="disabled">
+                <x-slot name="title">
+                    {{ __('Confirm') }}
+                </x-slot>
+            </x-btn-gray>
+        </x-slot>
+    </x-dialog-modal>
+
 </div>
 
 <script>
     document.addEventListener('livewire:load', function() {
 
-        const todoList = document.getElementById('todoItems-1');
-        // Initialize the SortableJS instance for the Todo list
-        const todoSortable = new Sortable(todoList, {
+        const projectBoardList = document.getElementById('projectBoardItems-2');
+        // Initialize the SortableJS instance for the Project Board list
+        const projectBoardSortable = new Sortable(projectBoardList, {
             group: 'shared-lists',
             animation: 300,
             onEnd: function(evt) {
-                Livewire.emit('updateListTodo', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
+                Livewire.emit('updateListProjectBoard', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
             }
         });
 
-        // Initialize the SortableJS instance for the In Progress list
-        const inProgressList = document.getElementById('inProgressItems-2');
-        const inProgressSortable = new Sortable(inProgressList, {
+        // Initialize the SortableJS instance for the Backlog list
+        const backlogList = document.getElementById('backlogItems-1');
+        const backlogSortable = new Sortable(backlogList, {
             group: 'shared-lists',
             animation: 300,
             onEnd: function(evt) {
-                Livewire.emit('updateListInProgress', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
+                Livewire.emit('updateListBacklog', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
             }
         });
     });
