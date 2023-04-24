@@ -74,7 +74,7 @@ class ProjectBoardBacklog extends Component
         $this->newStatus = $newStatus;
     }
 
-    public function moveTaskModal($taskID, $text1, $text2)
+    private function moveTaskModal($taskID, $text1, $text2)
     {
         $this->selectedTaskTitle = Task::find($taskID)->title;
         $this->moveTaskTaskText1 = $text1;
