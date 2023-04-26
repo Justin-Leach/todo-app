@@ -42,6 +42,9 @@ class Task extends Model
         $name = "";
 
         switch ($status_id) {
+            case TaskStatus::TASK_STATUS_BACKLOG_ID:
+                $name = TaskStatus::TASK_STATUS_BACKLOG;
+                break;
             case TaskStatus::TASK_STATUS_TO_DO_ID:
                 $name = TaskStatus::TASK_STATUS_TO_DO;
                 break;

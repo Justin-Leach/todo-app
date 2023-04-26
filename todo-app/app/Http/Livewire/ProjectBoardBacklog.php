@@ -6,6 +6,7 @@ use App\Models\Task;
 use Livewire\Component;
 use App\Models\TaskStatus;
 use App\Models\ProjectBoard;
+use Illuminate\Support\Facades\Log;
 use App\Repositories\ProjectBoardRepository;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
@@ -33,10 +34,13 @@ class ProjectBoardBacklog extends Component
     public $nameItems;
     public $newStatus;
 
+    // Dropdown
+    public $isOpen = false;
+    public $options = null;
 
     protected $listeners = [
         'updateListProjectBoard' => 'updateListProjectBoard',
-        'updateListBacklog' => 'updateListBacklog'
+        'updateListBacklog' => 'updateListBacklog',
     ];
 
     public function mount()
@@ -52,6 +56,41 @@ class ProjectBoardBacklog extends Component
 
         $this->projectBoardItems = $queryProjectBoard;
         $this->numberProjectBoardItems = count($queryProjectBoard);
+
+        $this->options = TaskStatus::all();
+    }
+
+    public function selectOptionProjectBoard($taskID, $optionID, $currentItems, $nameItems)
+    {
+        if ($currentItems !== "projectBoardItems" || $optionID === 1) {
+            return $this->selectOption($taskID, $optionID, $currentItems, $nameItems);
+        }
+        return $this->selectOption($taskID, $optionID, $currentItems, $currentItems);
+    }
+
+    private function selectOption($taskID, $optionID, $currentItems, $nameItems)
+    {
+        $currentList = &$this->{$currentItems};
+
+        $index = $currentList->search(function (Task $item) use ($taskID) {
+            return $item->id === $taskID;
+        });
+
+        $item = $currentList->pull($index);
+        $item->status_id = $optionID;
+
+        $list = &$this->{$nameItems};
+
+        $list->push($item);
+
+        $this->updateTaskStatus($taskID, $optionID);
+        $this->alertMessage('success', 'Task successfully updated!');
+        $this->toggleDropdown();
+    }
+
+    public function toggleDropdown()
+    {
+        $this->isOpen = !$this->isOpen;
     }
 
     public function updateListProjectBoard($taskID, $nameItems, $newStatus)
@@ -82,22 +121,22 @@ class ProjectBoardBacklog extends Component
         $this->moveTaskModal = true;
     }
 
-    // $taskID, $currentItems, $nameItems, $newStatus
     public function moveTaskProjectBoard()
     {
         $currentList = &$this->{$this->currentItems};
         $taskID = $this->taskID;
 
         $index = $currentList->search(function (Task $item) use ($taskID) {
-            return $item->id === intval($taskID);
+            return $item->id === $taskID;
         });
+
         $item = $currentList->pull($index);
+        $item->status_id = $this->newStatus;
 
         $list = &$this->{$this->nameItems};
         $list->push($item);
 
-        $this->updateTaskStatus(intval($taskID), intval($this->newStatus));
-
+        $this->updateTaskStatus($taskID, $this->newStatus);
         $this->alertMessage('success', 'Task successfully moved!');
         $this->moveTaskModal = false;
     }
