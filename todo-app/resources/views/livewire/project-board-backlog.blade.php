@@ -178,7 +178,9 @@
             // ghostClass: 'opacity-50',
             // chosenClass: 'bg-gray-100',
             onEnd: function(evt) {
-                Livewire.emit('updateListProjectBoard', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                if (evt.to.id !== evt.from.id) {
+                    Livewire.emit('updateListProjectBoard', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                }
             }
         });
 
@@ -190,7 +192,9 @@
             // ghostClass: 'opacity-50',
             // chosenClass: 'bg-gray-100',
             onEnd: function(evt) {
-                Livewire.emit('updateListBacklog', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                if (evt.to.id !== evt.from.id) {
+                    Livewire.emit('updateListBacklog', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                }
             }
         });
     });
