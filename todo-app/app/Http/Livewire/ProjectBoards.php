@@ -59,18 +59,24 @@ class ProjectBoards extends Component
     {
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
         $this->updateListOrder($tableOrder);
+        $this->updateCountTask();
+        $this->alertMessage('success', 'Task successfully moved!');
     }
 
     public function updateListInProgress($taskID, $newStatus, $tableOrder)
     {
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
         $this->updateListOrder($tableOrder);
+        $this->updateCountTask();
+        $this->alertMessage('success', 'Task successfully moved!');
     }
 
     public function updateListDone($taskID, $newStatus, $tableOrder)
     {
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
         $this->updateListOrder($tableOrder);
+        $this->updateCountTask();
+        $this->alertMessage('success', 'Task successfully moved!');
     }
 
     public function updateListOrder($list)
