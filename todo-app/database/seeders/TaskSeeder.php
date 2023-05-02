@@ -22,6 +22,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 0,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -32,6 +33,7 @@ class TaskSeeder extends Seeder
             'priority' => '2',
             'importance' => '2',
             'description' => 'aaaaaa',
+            'order' => 1,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -42,6 +44,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 0,
             'status_id' => TaskStatus::TASK_STATUS_IN_PROGRESS_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -52,6 +55,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 0,
             'status_id' => TaskStatus::TASK_STATUS_DONE_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -62,6 +66,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 2,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -72,6 +77,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 3,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -82,6 +88,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 4,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -92,6 +99,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 5,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -102,6 +110,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 6,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -112,6 +121,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 7,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -122,6 +132,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 8,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1
@@ -132,6 +143,7 @@ class TaskSeeder extends Seeder
             'priority' => '1',
             'importance' => '1',
             'description' => 'aaaaaa',
+            'order' => 9,
             'status_id' => TaskStatus::TASK_STATUS_TO_DO_ID,
             'user_id' => 1,
             'project_board_id' => 1

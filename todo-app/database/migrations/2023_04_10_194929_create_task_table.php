@@ -19,9 +19,9 @@ class CreateTaskTable extends Migration
             $table->integer('priority');
             $table->integer('importance');
             $table->string('description');
+            $table->integer('order');
 
             $table->unsignedBigInteger('status_id');
-
             $table->unsignedBigInteger('user_id');
             // $table->unsignedBigInteger('team_id');
             $table->timestamps();

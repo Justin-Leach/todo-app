@@ -40,14 +40,14 @@
 
             {{-- Todo Improve the hardcode id --}}
             {{-- Instead Improve the disable so the user is not able to click in the first place --}}
-            <ul id="todoItems-2" wire:sortable="updateListOrder('todo')" class="px-4 space-y-1 height-project-board">
+            <ul id="todoItems-2" wire:sortable="updateListTodo" class="px-4 space-y-1 height-project-board">
                 @foreach ($todoItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="todo-{{ $loop->index }}">
                             {{ $item['title'] }}
                         </li>
                     @else
-                        <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="todo-{{ $loop->index }}"
+                        <li data-id="task-{{ $item->id }}" id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="todo-{{ $loop->index }}"
                             wire:click="openTaskModal('{{ $item->id }}')">
                             {{ $item['title'] }}
                         </li>
@@ -62,14 +62,14 @@
             </div>
 
             {{-- Todo Improve the hardcode id --}}
-            <ul id="inProgressItems-3" wire:sortable="updateListOrder('inProgress')" class="px-4 space-y-1 height-project-board">
+            <ul id="inProgressItems-3" wire:sortable="updateListInProgress" class="px-4 space-y-1 height-project-board">
                 @foreach ($inProgressItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="in-progress-{{ $loop->index }}">
                             {{ $item['title'] }}
                         </li>
                     @else
-                        <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="in-progress-{{ $loop->index }}"
+                        <li data-id="task-{{ $item->id }}" id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="in-progress-{{ $loop->index }}"
                             wire:click="openTaskModal('{{ $item->id }}')">
                             {{ $item['title'] }}
                         </li>
@@ -84,14 +84,14 @@
             </div>
 
             {{-- Todo Improve the hardcode id --}}
-            <ul id="doneItems-4" wire:sortable="updateListOrder('done')" class="px-4 space-y-1 height-project-board">
+            <ul id="doneItems-4" wire:sortable="updateListDone" class="px-4 space-y-1 height-project-board">
                 @foreach ($doneItems as $item)
                     @if ($projectSelectedExpired)
                         <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-no-drop" wire:key="done-{{ $loop->index }}">
                             {{ $item['title'] }}
                         </li>
                     @else
-                        <li id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="done-{{ $loop->index }}" wire:click="openTaskModal('{{ $item->id }}')">
+                        <li data-id="task-{{ $item->id }}" id="task-{{ $item->id }}" class="bg-white border p-4 cursor-grab" wire:key="done-{{ $loop->index }}" wire:click="openTaskModal('{{ $item->id }}')">
                             {{ $item['title'] }}
                         </li>
                     @endif
@@ -116,7 +116,19 @@
             animation: 300,
             disabled: projectBoardActive,
             onEnd: function(evt) {
-                Livewire.emit('updateListTodo', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
+                if (evt.to.id !== evt.from.id) {
+
+                    $tableOrder = [];
+                    if (evt.to.id.split("-")[0] === "inProgressItems") {
+                        $tableOrder = inProgressSortable.toArray();
+                    } else {
+                        $tableOrder = doneSortable.toArray();
+                    }
+
+                    Livewire.emit('updateListTodo', evt.item.id.split("-")[1], evt.to.id.split("-")[1], $tableOrder);
+                } else {
+                    Livewire.emit('updateListOrder', todoSortable.toArray());
+                }
             }
         });
 
@@ -127,7 +139,19 @@
             animation: 300,
             disabled: projectBoardActive,
             onEnd: function(evt) {
-                Livewire.emit('updateListInProgress', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
+                if (evt.to.id !== evt.from.id) {
+
+                    $tableOrder = [];
+                    if (evt.to.id.split("-")[0] === "todoItems") {
+                        $tableOrder = todoSortable.toArray();
+                    } else {
+                        $tableOrder = doneSortable.toArray();
+                    }
+
+                    Livewire.emit('updateListInProgress', evt.item.id.split("-")[1], evt.to.id.split("-")[1], $tableOrder);
+                } else {
+                    Livewire.emit('updateListOrder', inProgressSortable.toArray());
+                }
             }
         });
 
@@ -138,7 +162,19 @@
             animation: 300,
             disabled: projectBoardActive,
             onEnd: function(evt) {
-                Livewire.emit('updateListDone', evt.item.id.split("-")[1], evt.to.id.split("-")[0], evt.to.id.split("-")[1]);
+                if (evt.to.id !== evt.from.id) {
+
+                    $tableOrder = [];
+                    if (evt.to.id.split("-")[0] === "todoItems") {
+                        $tableOrder = todoSortable.toArray();
+                    } else {
+                        $tableOrder = inProgressSortable.toArray();
+                    }
+
+                    Livewire.emit('updateListDone', evt.item.id.split("-")[1], evt.to.id.split("-")[1], $tableOrder);
+                } else {
+                    Livewire.emit('updateListOrder', doneSortable.toArray());
+                }
             }
         });
     });

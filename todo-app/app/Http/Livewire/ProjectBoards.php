@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\ProjectBoard;
 use App\Models\Task;
+use App\Models\TaskOrder;
 use Livewire\Component;
 use App\Repositories\ProjectBoardRepository;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -30,9 +31,8 @@ class ProjectBoards extends Component
         'createTaskModal' => 'createTaskModal',
         'updateTaskModal' => 'updateTaskModal',
         'deleteTaskModal' => 'deleteTaskModal', // the elements in the last get automatically remove
-
-        // Project board
-        'updateProjectBoardModal' => 'updateProjectBoard',
+        'updateListOrder' => 'updateListOrder', // task order
+        'updateProjectBoardModal' => 'updateProjectBoard', // Project board
     ];
 
     public function mount()
@@ -55,43 +55,33 @@ class ProjectBoards extends Component
         $this->numberDoneItems = count($queryTaskDone);
     }
 
-    public function updateListTodo($taskID, $nameItems, $newStatus)
+    public function updateListTodo($taskID, $newStatus, $tableOrder)
     {
-        $index = $this->todoItems->search(function (Task $item) use ($taskID) {
-            return $item->id === intval($taskID);
-        });
-        $item = $this->todoItems->pull($index);
-
-        $list = &$this->{$nameItems};
-        $list->push($item);
-
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
+        $this->updateListOrder($tableOrder);
     }
 
-    public function updateListInProgress($taskID, $nameItems, $newStatus)
+    public function updateListInProgress($taskID, $newStatus, $tableOrder)
     {
-        $index = $this->inProgressItems->search(function (Task $item) use ($taskID) {
-            return $item->id === intval($taskID);
-        });
-        $item = $this->inProgressItems->pull($index);
-
-        $list = &$this->{$nameItems};
-        $list->push($item);
-
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
+        $this->updateListOrder($tableOrder);
     }
 
-    public function updateListDone($taskID, $nameItems, $newStatus)
+    public function updateListDone($taskID, $newStatus, $tableOrder)
     {
-        $index = $this->doneItems->search(function (Task $item) use ($taskID) {
-            return $item->id === intval($taskID);
-        });
-        $item = $this->doneItems->pull($index);
-
-        $list = &$this->{$nameItems};
-        $list->push($item);
-
         $this->updateTaskStatus(intval($taskID), intval($newStatus));
+        $this->updateListOrder($tableOrder);
+    }
+
+    public function updateListOrder($list)
+    {
+        foreach ($list as $key => $value) {
+            $task = Task::find(intval(explode("-", $value)[1]));
+            $task->order = $key;
+            $task->save();
+        }
+
+        $this->refreshItemsList();
     }
 
     public function openCreateTaskModal()
@@ -134,18 +124,9 @@ class ProjectBoards extends Component
         $this->alertMessage('success', 'Task successfully created!');
     }
 
-    public function updateTaskModal($taskID, $oldNameItems, $newNameItems)
+    public function updateTaskModal()
     {
-        $oldList = &$this->{$oldNameItems};
-        $newList = &$this->{$newNameItems};
-
-        $index = $oldList->search(function (Task $item) use ($taskID) {
-            return $item->id === $taskID;
-        });
-        $item = $oldList->pull($index);
-
-        $newList->push($item);
-
+        $this->refreshItemsList();
         $this->updateCountTask();
         $this->alertMessage('success', 'Task successfully updated!');
     }
@@ -163,6 +144,13 @@ class ProjectBoards extends Component
         $task->save();
 
         $this->updateCountTask();
+    }
+
+    private function refreshItemsList()
+    {
+        $this->todoItems = (new ProjectBoardRepository)->getProjectTaskTodo($this->projectBoard->id);
+        $this->inProgressItems = (new ProjectBoardRepository)->getProjectTaskInProgress($this->projectBoard->id);
+        $this->doneItems = (new ProjectBoardRepository)->getProjectTaskDone($this->projectBoard->id);
     }
 
     private function updateCountTask()

@@ -33,6 +33,7 @@ class ProjectBoardBacklog extends Component
     public $currentItems;
     public $nameItems;
     public $newStatus;
+    public $list;
 
     // Dropdown
     public $isOpen = false;
@@ -40,7 +41,9 @@ class ProjectBoardBacklog extends Component
 
     protected $listeners = [
         'updateListProjectBoard' => 'updateListProjectBoard',
+        'updateListProjectBoardOrder' => 'updateListProjectBoardOrder',
         'updateListBacklog' => 'updateListBacklog',
+        'updateListBacklogOrder' => 'updateListBacklogOrder'
     ];
 
     public function mount()
@@ -48,42 +51,22 @@ class ProjectBoardBacklog extends Component
         $projectBoardID = 1; // TODO Find the current project board
         $this->projectBoard = ProjectBoard::find($projectBoardID);
 
-        $queryBacklog = ProjectBoard::find($projectBoardID)->tasks()->where('status_id', '=', TaskStatus::TASK_STATUS_BACKLOG_ID)->get();
-        $queryProjectBoard = ProjectBoard::find($projectBoardID)->tasks()->where('status_id', '!=', TaskStatus::TASK_STATUS_BACKLOG_ID)->get();
-
-        $this->backlogItems = $queryBacklog;
-        $this->numberBacklogItems = count($queryBacklog);
-
+        $queryProjectBoard = (new ProjectBoardRepository)->getProjectBoardTask($this->projectBoard->id);
         $this->projectBoardItems = $queryProjectBoard;
         $this->numberProjectBoardItems = count($queryProjectBoard);
+
+        $queryBacklog = (new ProjectBoardRepository)->getBacklogTask($this->projectBoard->id);
+        $this->backlogItems = $queryBacklog;
+        $this->numberBacklogItems = count($queryBacklog);
 
         $this->options = TaskStatus::all();
     }
 
-    public function selectOptionProjectBoard($taskID, $optionID, $currentItems, $nameItems)
+    public function selectOption($taskID, $optionID)
     {
-        if ($currentItems !== "projectBoardItems" || $optionID === 1) {
-            return $this->selectOption($taskID, $optionID, $currentItems, $nameItems);
-        }
-        return $this->selectOption($taskID, $optionID, $currentItems, $currentItems);
-    }
-
-    private function selectOption($taskID, $optionID, $currentItems, $nameItems)
-    {
-        $currentList = &$this->{$currentItems};
-
-        $index = $currentList->search(function (Task $item) use ($taskID) {
-            return $item->id === $taskID;
-        });
-
-        $item = $currentList->pull($index);
-        $item->status_id = $optionID;
-
-        $list = &$this->{$nameItems};
-
-        $list->push($item);
-
+        $this->updateTaskOrder($taskID);
         $this->updateTaskStatus($taskID, $optionID);
+
         $this->alertMessage('success', 'Task successfully updated!');
         $this->toggleDropdown();
     }
@@ -93,23 +76,19 @@ class ProjectBoardBacklog extends Component
         $this->isOpen = !$this->isOpen;
     }
 
-    public function updateListProjectBoard($taskID, $nameItems, $newStatus)
+    public function updateListProjectBoard($taskID, $newStatus)
     {
         $this->moveTaskModal($taskID, $this->projectBoard->name, 'Backlog');
 
         $this->taskID = $taskID;
-        $this->currentItems = "projectBoardItems";
-        $this->nameItems = $nameItems;
         $this->newStatus = $newStatus;
     }
 
-    public function updateListBacklog($taskID, $nameItems, $newStatus)
+    public function updateListBacklog($taskID, $newStatus)
     {
         $this->moveTaskModal($taskID, 'Backlog', $this->projectBoard->name);
 
         $this->taskID = $taskID;
-        $this->currentItems = "backlogItems";
-        $this->nameItems = $nameItems;
         $this->newStatus = $newStatus;
     }
 
@@ -123,29 +102,87 @@ class ProjectBoardBacklog extends Component
 
     public function moveTaskProjectBoard()
     {
-        $currentList = &$this->{$this->currentItems};
-        $taskID = $this->taskID;
-
-        $index = $currentList->search(function (Task $item) use ($taskID) {
-            return $item->id === $taskID;
-        });
-
-        $item = $currentList->pull($index);
-        $item->status_id = $this->newStatus;
-
-        $list = &$this->{$this->nameItems};
-        $list->push($item);
-
-        $this->updateTaskStatus($taskID, $this->newStatus);
+        $this->updateTaskOrder($this->taskID);
+        $this->updateTaskStatus($this->taskID, $this->newStatus);
         $this->alertMessage('success', 'Task successfully moved!');
         $this->moveTaskModal = false;
+    }
+
+    public function updateListProjectBoardOrder($list)
+    {
+        $cptTodo = 0;
+        $cptInProgress = 0;
+        $cptDone = 0;
+
+        foreach ($list as $key => $value) {
+            if (intval(explode("-", $value)[1]) === 2) {
+                $task = Task::find(intval(explode("-", $value)[2]));
+                $task->order = $cptTodo;
+                $task->save();
+                $cptTodo++;
+            }
+
+            if (intval(explode("-", $value)[1]) === 3) {
+                $task = Task::find(intval(explode("-", $value)[2]));
+                $task->order = $cptInProgress;
+                $task->save();
+                $cptInProgress++;
+            }
+
+            if (intval(explode("-", $value)[1]) === 4) {
+                $task = Task::find(intval(explode("-", $value)[2]));
+                $task->order = $cptDone;
+                $task->save();
+                $cptDone++;
+            }
+        }
+
+        $this->projectBoardItems = (new ProjectBoardRepository)->getProjectBoardTask($this->projectBoard->id);
+    }
+
+    public function updateListBacklogOrder($list)
+    {
+        foreach ($list as $key => $value) {
+            $task = Task::find(intval(explode("-", $value)[2]));
+            $task->order = $key;
+            $task->save();
+        }
+
+        $this->backlogItems = (new ProjectBoardRepository)->getBacklogTask($this->projectBoard->id);
+    }
+
+    private function updateTaskOrder($taskID)
+    {
+        $task = Task::find($taskID);
+
+        // Update previous list order
+        $tasks = Task::where('project_board_id', '=', $this->projectBoard->id)
+            ->where('status_id', '=', $task->status_id)
+            ->where('order', '>', $task->order)
+            ->get();
+
+        foreach ($tasks as $t) {
+            $t->order = $t->order - 1;
+            $t->save();
+        }
     }
 
     private function updateTaskStatus($taskID, $newStatus)
     {
         $task = Task::find($taskID);
         $task->status_id = $newStatus;
+
+        $latestTask = Task::where('tasks.project_board_id', '=', $this->projectBoard->id)
+            ->where('tasks.status_id', '=', $newStatus)
+            ->orderBy('order', 'DESC')
+            ->latest()
+            ->first();
+
+        $task->order = $latestTask ? $latestTask->order + 1 : 0;
         $task->save();
+
+        $this->projectBoardItems = (new ProjectBoardRepository)->getProjectBoardTask($this->projectBoard->id);
+        $this->backlogItems = (new ProjectBoardRepository)->getBacklogTask($this->projectBoard->id);
 
         $this->updateCountTask();
     }

@@ -26,8 +26,7 @@
                 </div>
 
                 <div class="mt-4 flex flex-col">
-                    <label class="block font-medium text-sm text-gray-700"
-                        for="importance">{{ __('Importance') }}</label>
+                    <label class="block font-medium text-sm text-gray-700" for="importance">{{ __('Importance') }}</label>
                     <input type="number" wire:model="task.importance"
                         class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm">
                     @error('task.importance')
@@ -36,8 +35,7 @@
                 </div>
 
                 <div class="mt-4 flex flex-col">
-                    <label class="block font-medium text-sm text-gray-700"
-                        for="description">{{ __('Description') }}</label>
+                    <label class="block font-medium text-sm text-gray-700" for="description">{{ __('Description') }}</label>
                     <textarea wire:model="task.description"
                         class="w-full h-36 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm"></textarea>
                     @error('task.description')
@@ -55,10 +53,9 @@
                                         class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         id="options-menu" aria-haspopup="true" aria-expanded="true">
                                         {{ $selectedOptionValue }}
-                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 14l5-5-5-5-1.414 1.414L11.172 9H4v2h7.172l-2.586 2.586L10 14z"
+                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 14l5-5-5-5-1.414 1.414L11.172 9H4v2h7.172l-2.586 2.586L10 14z"
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </button>
@@ -70,10 +67,12 @@
                                 role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                 <div class="py-1" role="none">
                                     @foreach ($options as $option)
-                                        <a wire:click="selectOption('{{ $option->id }}', '{{ $option->name }}')"
-                                            @click="isOpen = false" href="#"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                            role="menuitem">{{ $option->name }}</a>
+                                        @if ($option->name !== $selectedOptionValue)
+                                            <a wire:click="selectOption('{{ $option->id }}', '{{ $option->name }}')" @click="isOpen = false"
+                                                role="menuitem" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                                {{ $option->name }}
+                                            </a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -84,12 +83,6 @@
         </x-slot>
 
         <x-slot name="footer">
-            {{-- <x-btn-red class="w-48" wire:click="deleteTaskModal" wire:loading.attr="disabled">
-                <x-slot name="title">
-                    {{ __('Delete Task') }}
-                </x-slot>
-            </x-btn-red> --}}
-
             <x-btn-green class="w-48" wire:click="createTask" wire:loading.attr="disabled">
                 <x-slot name="title">
                     {{ __('Create Task') }}
@@ -125,8 +118,7 @@
                 </div>
 
                 <div class="mt-4 flex flex-col">
-                    <label class="block font-medium text-sm text-gray-700"
-                        for="importance">{{ __('Importance') }}</label>
+                    <label class="block font-medium text-sm text-gray-700" for="importance">{{ __('Importance') }}</label>
                     <input type="number" wire:model="task.importance"
                         class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm">
                     @error('task.importance')
@@ -135,8 +127,7 @@
                 </div>
 
                 <div class="mt-4 flex flex-col">
-                    <label class="block font-medium text-sm text-gray-700"
-                        for="description">{{ __('Description') }}</label>
+                    <label class="block font-medium text-sm text-gray-700" for="description">{{ __('Description') }}</label>
                     <textarea wire:model="task.description"
                         class="w-full h-36 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded shadow-sm"></textarea>
                     @error('task.description')
@@ -154,10 +145,9 @@
                                         class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         id="options-menu" aria-haspopup="true" aria-expanded="true">
                                         {{ $selectedOptionValue }}
-                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path fill-rule="evenodd"
-                                                d="M10 14l5-5-5-5-1.414 1.414L11.172 9H4v2h7.172l-2.586 2.586L10 14z"
+                                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 14l5-5-5-5-1.414 1.414L11.172 9H4v2h7.172l-2.586 2.586L10 14z"
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </button>
@@ -169,10 +159,12 @@
                                 role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                 <div class="py-1" role="none">
                                     @foreach ($options as $option)
-                                        <a wire:click="selectOption('{{ $option->id }}', '{{ $option->name }}')"
-                                            @click="isOpen = false" href="#"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                            role="menuitem">{{ $option->name }}</a>
+                                        @if ($option->name !== $selectedOptionValue)
+                                            <a wire:click="selectOption('{{ $option->id }}', '{{ $option->name }}')" @click="isOpen = false"
+                                                role="menuitem" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                                {{ $option->name }}
+                                            </a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

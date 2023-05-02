@@ -63,6 +63,15 @@ class TaskModal extends Component
         $this->task->status_id = intval($this->selectedOptionID);
         $this->task->user_id = auth()->user()->id;
         $this->task->project_board_id = 1; // TODO change this to the selected project
+
+        // TODO To Improve
+        $latestTask = Task::where('tasks.project_board_id', '=', $this->task->project_board_id)
+            ->where('tasks.status_id', '=', $this->task->status_id)
+            ->orderBy('order', 'DESC')
+            ->latest()
+            ->first();
+
+        $this->task->order = $latestTask ? $latestTask->order + 1 : 0;
         $this->task->save();
 
         $this->createTaskModal = false;
@@ -72,19 +81,50 @@ class TaskModal extends Component
     public function updateTask()
     {
         $previousStatus = $this->task->status_id;
+        $previousOrder = $this->task->order;
 
         $this->validate();
         $this->task->status_id = intval($this->selectedOptionID);
+
+        // TODO To Improve
+        $latestTask = Task::where('tasks.project_board_id', '=', $this->task->project_board_id)
+            ->where('tasks.status_id', '=', $this->task->status_id)
+            ->orderBy('order', 'DESC')
+            ->latest()
+            ->first();
+
+        $this->task->order = $latestTask ? $latestTask->order + 1 : 0;
         $this->task->save();
 
-        $this->updateTaskModal = false;
+        // Need to update the previous list
+        $tasks = Task::where('project_board_id', '=', $this->task->project_board_id)
+            ->where('status_id', '=', $previousStatus)
+            ->where('order', '>', $previousOrder)
+            ->get();
 
-        $this->emit('updateTaskModal', $this->task->id, $this->task->statusNameItem($previousStatus), $this->task->statusNameItem($this->task->status_id));
+        foreach ($tasks as $t) {
+            $t->order = $t->order - 1;
+            $t->save();
+        }
+
+        $this->updateTaskModal = false;
+        $this->emit('updateTaskModal');
     }
 
     public function deleteTask()
     {
+        $tasks = Task::where('project_board_id', '=', $this->task->project_board_id)
+            ->where('status_id', '=', $this->task->status_id)
+            ->where('order', '>', $this->task->order)
+            ->get();
+
         $this->task->delete();
+
+        foreach ($tasks as $t) {
+            $t->order = $t->order - 1;
+            $t->save();
+        }
+
         $this->deleteTaskModal = false;
         $this->updateTaskModal = false;
         $this->emit('deleteTaskModal');

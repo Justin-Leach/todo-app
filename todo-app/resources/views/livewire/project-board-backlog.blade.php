@@ -16,9 +16,10 @@
             {{-- Project Board Improve the hardcode id --}}
             <ul id="projectBoardItems-2" class="px-4 space-y-1 height-project-board" wire:sortable="updateListProjectBoard">
                 @foreach ($projectBoardItems as $item)
-                    <li id="task-{{ $item->id }}" class="flex flex-row bg-white border p-2" wire:key="project-board-{{ $loop->index }}">
+                    <li data-id="task-{{ $item->status_id }}-{{ $item->id }}" id="task-{{ $item->id }}" class="flex flex-row bg-white border p-2" wire:key="project-board-{{ $loop->index }}">
                         <div class="w-10/12 flex flex-row">
                             {{ $item->title }}
+                            <div class="bg-red-100 px-2">{{ $item->order }}</div>
                         </div>
 
                         <div class="flex justify-end w-2/12">
@@ -28,7 +29,7 @@
                                         <span @click="isOpen = !isOpen" class="rounded-md shadow-sm">
                                             <button type="button"
                                                 class="inline-flex justify-center items-center w-full h-6 border border-gray-300 pl-2 pr-1 py-0.5 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                id="options-menu-{{$item->id}}" aria-haspopup="true" aria-expanded="true">
+                                                id="options-menu-{{ $item->id }}" aria-haspopup="true" aria-expanded="true">
                                                 {{ $item->statusName($item->status_id) }}
 
                                                 <svg role="presentation" width="10" height="10" viewBox="5 5 13 13">
@@ -42,11 +43,12 @@
 
                                     <div x-show="isOpen" @click.away="isOpen = false"
                                         class="origin-top-right absolute right-0 z-20 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                        role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{$item->id}}">
+                                        role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{ $item->id }}">
                                         <div class="py-1" role="none">
                                             @foreach ($options as $option)
                                                 @if ($option->name !== $item->statusName($item->status_id))
-                                                    <a wire:click="selectOptionProjectBoard({{ $item->id }}, {{ $option->id }}, 'projectBoardItems', 'backlogItems')" @click="isOpen = false"
+                                                    <a wire:click="selectOption({{ $item->id }}, {{ $option->id }})"
+                                                        @click="isOpen = false"
                                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"role="menuitem">
                                                         {{ $option->name }}
                                                     </a>
@@ -66,15 +68,16 @@
         <div class="flex flex-col  bg-slate-100 rounded-lg">
             <div class="sticky top-0 h-8 bg-slate-100">
                 <h2 class="font-semibold px-4 py-2">Backlog
-                    {{ $numberBacklogItems != 0 ? '('. $numberBacklogItems . ' issues)' : '' }}</h2>
+                    {{ $numberBacklogItems != 0 ? '(' . $numberBacklogItems . ' issues)' : '' }}</h2>
             </div>
 
             {{-- Todo Improve the hardcode id --}}
             <ul id="backlogItems-1" class="px-4 space-y-1 height-project-board" wire:sortable="updateListBacklog">
                 @foreach ($backlogItems as $item)
-                    <li id="task-{{ $item->id }}" class="flex flex-row bg-white border p-2" wire:key="backlog-{{ $loop->index }}">
+                    <li data-id="task-{{ $item->status_id }}-{{ $item->id }}" id="task-{{ $item->id }}" class="flex flex-row bg-white border p-2" wire:key="backlog-{{ $loop->index }}">
                         <div class="w-10/12 flex flex-row">
                             {{ $item->title }}
+                            <div class="bg-red-100 px-2">{{ $item->order }}</div>
                         </div>
 
                         <div class="flex justify-end w-2/12">
@@ -84,7 +87,7 @@
                                         <span @click="isOpen = !isOpen" class="rounded-md shadow-sm">
                                             <button type="button"
                                                 class="inline-flex justify-center items-center w-full h-6 border border-gray-300 pl-2 pr-1 py-0.5 bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                id="options-menu-{{$item->id}}" aria-haspopup="true" aria-expanded="true">
+                                                id="options-menu-{{ $item->id }}" aria-haspopup="true" aria-expanded="true">
                                                 {{ $item->statusName($item->status_id) }}
 
                                                 <svg role="presentation" width="10" height="10" viewBox="5 5 13 13">
@@ -98,11 +101,12 @@
 
                                     <div x-show="isOpen" @click.away="isOpen = false"
                                         class="origin-top-right absolute right-0 z-20 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                        role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{$item->id}}">
+                                        role="menu" aria-orientation="vertical" aria-labelledby="options-menu-{{ $item->id }}">
                                         <div class="py-1" role="none">
                                             @foreach ($options as $option)
                                                 @if ($option->name !== $item->statusName($item->status_id))
-                                                    <a wire:click="selectOptionProjectBoard({{ $item->id }}, {{ $option->id }}, 'backlogItems', 'projectBoardItems')" @click="isOpen = false"
+                                                    <a wire:click="selectOption({{ $item->id }}, {{ $option->id }})"
+                                                        @click="isOpen = false"
                                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"role="menuitem">
                                                         {{ $option->name }}
                                                     </a>
@@ -179,9 +183,11 @@
             // chosenClass: 'bg-gray-100',
             onEnd: function(evt) {
                 if (evt.to.id !== evt.from.id) {
-                    Livewire.emit('updateListProjectBoard', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                    Livewire.emit('updateListProjectBoard', parseInt(evt.item.id.split("-")[1]), parseInt(evt.to.id.split("-")[1]));
+                } else {
+                    Livewire.emit('updateListProjectBoardOrder', projectBoardSortable.toArray());
                 }
-            }
+            },
         });
 
         // Initialize the SortableJS instance for the Backlog list
@@ -193,7 +199,9 @@
             // chosenClass: 'bg-gray-100',
             onEnd: function(evt) {
                 if (evt.to.id !== evt.from.id) {
-                    Livewire.emit('updateListBacklog', parseInt(evt.item.id.split("-")[1]), evt.to.id.split("-")[0], parseInt(evt.to.id.split("-")[1]));
+                    Livewire.emit('updateListBacklog', parseInt(evt.item.id.split("-")[1]), parseInt(evt.to.id.split("-")[1]));
+                } else {
+                    Livewire.emit('updateListBacklogOrder', backlogSortable.toArray());
                 }
             }
         });

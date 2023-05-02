@@ -31,8 +31,9 @@ class ProjectBoardRepository
      */
     public function getProjectTaskTodo($projectBoardID)
     {
-        return ProjectBoard::find($projectBoardID)->tasks()
+        return Task::where('project_board_id', '=', $projectBoardID)
             ->where('status_id', '=', TaskStatus::TASK_STATUS_TO_DO_ID)
+            ->orderBy('order')
             ->get();
     }
 
@@ -45,8 +46,9 @@ class ProjectBoardRepository
      */
     public function getProjectTaskInProgress($projectBoardID)
     {
-        return ProjectBoard::find($projectBoardID)->tasks()
+        return Task::where('project_board_id', '=', $projectBoardID)
             ->where('status_id', '=', TaskStatus::TASK_STATUS_IN_PROGRESS_ID)
+            ->orderBy('order')
             ->get();
     }
 
@@ -59,8 +61,26 @@ class ProjectBoardRepository
      */
     public function getProjectTaskDone($projectBoardID)
     {
-        return ProjectBoard::find($projectBoardID)->tasks()
+        return Task::where('project_board_id', '=', $projectBoardID)
             ->where('status_id', '=', TaskStatus::TASK_STATUS_DONE_ID)
+            ->orderBy('order')
+            ->get();
+    }
+
+    public function getProjectBoardTask($projectBoardID)
+    {
+        return Task::where('project_board_id', '=', $projectBoardID)
+            ->where('status_id', '!=', TaskStatus::TASK_STATUS_BACKLOG_ID)
+            ->orderBy('status_id', 'desc')
+            ->orderBy('order')
+            ->get();
+    }
+
+    public function getBacklogTask($projectBoardID)
+    {
+        return Task::where('project_board_id', '=', $projectBoardID)
+            ->where('status_id', '=', TaskStatus::TASK_STATUS_BACKLOG_ID)
+            ->orderBy('order')
             ->get();
     }
 }
