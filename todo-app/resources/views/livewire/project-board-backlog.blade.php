@@ -179,8 +179,7 @@
         const projectBoardSortable = new Sortable(projectBoardList, {
             group: 'shared-lists',
             animation: 300,
-            // ghostClass: 'opacity-50',
-            // chosenClass: 'bg-gray-100',
+            ghostClass: 'bg-drag',
             onEnd: function(evt) {
                 if (evt.to.id !== evt.from.id) {
                     Livewire.emit('updateListProjectBoard', parseInt(evt.item.id.split("-")[1]), parseInt(evt.to.id.split("-")[1]));
@@ -195,8 +194,7 @@
         const backlogSortable = new Sortable(backlogList, {
             group: 'shared-lists',
             animation: 300,
-            // ghostClass: 'opacity-50',
-            // chosenClass: 'bg-gray-100',
+            ghostClass: 'bg-drag',
             onEnd: function(evt) {
                 if (evt.to.id !== evt.from.id) {
                     Livewire.emit('updateListBacklog', parseInt(evt.item.id.split("-")[1]), parseInt(evt.to.id.split("-")[1]));

@@ -24,6 +24,8 @@ class ProjectBoards extends Component
     public $numberInProgressItems = 0;
     public $numberDoneItems = 0;
 
+    public $minHeight = 0;
+
     protected $listeners = [
         'updateListTodo' => 'updateListTodo',
         'updateListInProgress' => 'updateListInProgress',
@@ -33,6 +35,7 @@ class ProjectBoards extends Component
         'deleteTaskModal' => 'deleteTaskModal', // the elements in the last get automatically remove
         'updateListOrder' => 'updateListOrder', // task order
         'updateProjectBoardModal' => 'updateProjectBoard', // Project board
+        'setMaxHeight' => 'setMaxHeight'
     ];
 
     public function mount()
@@ -128,6 +131,7 @@ class ProjectBoards extends Component
 
         $this->updateCountTask();
         $this->alertMessage('success', 'Task successfully created!');
+        $this->emit('setMaxHeightEvent');
     }
 
     public function updateTaskModal()
@@ -135,12 +139,19 @@ class ProjectBoards extends Component
         $this->refreshItemsList();
         $this->updateCountTask();
         $this->alertMessage('success', 'Task successfully updated!');
+        $this->emit('setMaxHeightEvent');
     }
 
     public function deleteTaskModal()
     {
         $this->updateCountTask();
         $this->alertMessage('success', 'Task successfully deleted!');
+        $this->emit('setMaxHeightEvent');
+    }
+
+    public function setMaxHeight($maxHeight)
+    {
+        $this->minHeight = $maxHeight;
     }
 
     private function updateTaskStatus($taskID, $newStatus)
